@@ -1,0 +1,302 @@
+<html>
+
+	<head>
+     <style>
+     
+     		#topcontainer
+     		  {
+     		  		width:800px;
+     		  		height:800px;
+     		  		
+     		  }
+     		 #sequencecontainer
+     		  {
+     		 	width:796px;
+				height:396px;
+				margin:0;
+				padding:0;
+				border: 2px solid;
+     		 		
+     		 	}
+     		 #literatureconatiner
+     		   {
+     		    width:796;
+     		 	 height:396;
+     		 	 border:solid 2px;
+     		   }
+     		  #uniprotidcontainer
+     		   {
+     		     width:156px;
+				  height:396px;
+				  border-right:2px solid;
+				  margin:0;
+				  padding:0;
+				  float:left;
+              overflow-y: auto;
+     		   }
+     		  #namecontainer
+     		   {
+     		     height:46px;
+     		     width:638px;
+     		     border-bottom:solid 2px;
+     		   } 
+     		  #datacontainer
+     		   {
+     		     height:348px;
+				  width:638px;
+				  overflow-y: auto;
+     		   }
+     		  #entrycontainer
+     		   {
+     		     width:638px;
+     			  height:396px;
+				  margin:0;
+				  padding:0;
+				  float:right;	     	 
+     		   }		
+     		  .nameclass
+     		   {
+     		     font-size: 20px;
+     		     float:left;
+     		   }
+     		     
+     		   .organismclass
+     		    {
+     		      font-size:20px;
+     		     	float:right;
+     		     	font-style: italic;
+     		    }
+     		    .wrapseq
+     		    {
+     		     word-wrap: break-word;
+     		    } 	 
+     		    #pubmedidcontainer
+     		     {
+     		     	width:156px;
+					height:396px;
+					border-right: 
+					2px solid;
+     		     	float:left;
+					overflow-y: auto;
+     		     }	
+     		     #citatationcontainer
+     		     {
+     		      width:796px;
+				   height:396px;
+     		     }
+     		     #titlecontainer
+     		     {
+     		      height:46px;
+     		     	width:638px;
+     		     	float:right;
+     		     	border-bottom:solid 2px;
+     		     }
+					.title
+					{
+					 font-weight: bold;
+					 word-wrap: break-word;
+					 text-align: center;					
+					}	
+     		     #journalcontainer
+     		     {
+     		       height:46px;
+     		     	 width:638px;
+     		     	 float:right;
+     		     	 border-bottom:solid 2px;
+     		     }
+     		     .journalclass
+     		     {
+     		      font-size: 20px;
+   				text-align: center;
+				  }
+     		     #pubcontainer
+     		     {
+     		     
+     		     	height:46px;
+     		     	width:638px;
+     		     	float:right;
+     		     	border-bottom:solid 2px;
+     		     }
+     		     .Volume
+     		     {
+     		     	font-size: 20px;
+   				margin-left:20%;
+   			  }
+     		     .pages
+     		     {
+     		      font-size:20px;
+     		     	float:left;
+     		     		
+     		     }
+     		     .years
+     		     {
+     		     	font-size:20px;
+     		     	float: right;
+     		     }		
+     		     #authorcontainer
+     		     {
+     		      height:240px;
+     		     	width:500px;
+     		     	float:right;
+     		     	border-right: 
+					2px solid;
+     		     	overflow-y: auto;     		     
+     		     }
+     		     	
+     </style>
+     <script>
+     	var xhttp ;
+     	
+     	function init()
+			 {
+				url = 'http://127.0.0.1/UNIPROTID.php';
+				xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = presentIDs ;
+				xhttp.open("GET", url, true);
+				xhttp.send();
+			 }
+			 
+		   function presentIDs()
+			 {
+				if ( xhttp.readyState == 4 &&  xhttp.status == 200 )
+				  {
+					  var xmlDoc = xhttp.responseXML;
+					  var IDs = xmlDoc.getElementsByTagName( 'uniprotid' ) ;
+					  var scrollList = document.getElementById( 'uniprotidcontainer' ) ;
+					  scrollList.innerHTML=" ";
+					  for( var j = 0 ; j < IDs.length ; ++j )
+						{
+							scrollList.innerHTML += "<p class='selectable' onmousedown='getUNIPROT(this);'>" + IDs[j].childNodes[0].nodeValue + "</p>" ;
+						}
+					} 
+				}
+			
+					 
+				
+			
+				
+     		function getUNIPROT(e)
+		   {
+				 var uniprotid = e.innerHTML;
+				 url = 'http://127.0.0.1/getUniprotID.php?uniproid=' + uniprotid ;
+				 xhttp = new XMLHttpRequest();
+				 xhttp.onreadystatechange = presentCitations1;
+				 xhttp.open("GET", url, true);
+				 xhttp.send();				 
+				 
+			}
+			function getPubIDs(e)
+		   {
+				 var pubmed = e.innerHTML;
+				 url = 'http://127.0.0.1/getpubs.php?PubMedID=' + pubmed ;
+				 xhttp = new XMLHttpRequest();
+				 xhttp.onreadystatechange = presentCitations2 ;
+				 xhttp.open("GET", url, true);
+				 xhttp.send();
+			}	
+			
+	function presentCitations1()
+		   {
+			 if ( xhttp.readyState == 4 &&  xhttp.status == 200 )
+				{
+					var xmlDoc = xhttp.responseXML;
+					var nameElem = document.getElementById('namecontainer');
+					var fullname = xmlDoc.getElementsByTagName( 'fullname' )[0].childNodes[0].nodeValue ;
+					var organism = xmlDoc.getElementsByTagName( 'organism' )[0].childNodes[0].nodeValue ;
+					var sequence = xmlDoc.getElementsByTagName( 'sequence' )[0].childNodes[0].nodeValue ;
+					nameElem.innerHTML = '<span class = "nameclass">' + fullname + '</span>' + '<span class = "organismclass">' + organism + '</span>';
+					
+					var dataElm = document.getElementById('datacontainer');
+					dataElm.innerHTML = '<p class= "wrapseq">' + sequence + '</p>';
+					
+					var TitleElm = document.getElementById('titlecontainer');
+					TitleElm.innerHTML = " ";
+					
+					var JournalElm = document.getElementById('journalcontainer');
+					JournalElm.innerHTML=" ";
+					
+					var PubElm = document.getElementById('pubcontainer');	
+					PubElm.innerHTML = " ";	
+					var author = xmlDoc.getElementsByTagName( 'author' );
+					authorlist = document.getElementById('authorcontainer');
+					authorlist.innerHTML = " ";
+					var Publist = document.getElementById('pubmedidcontainer');	
+					var PubMed = xmlDoc.getElementsByTagName( 'PubMed' );
+					Publist.innerHTML = " ";
+					for( var j = 0 ; j < PubMed.length ; ++j )
+						{
+							
+							Publist.innerHTML += "<p class='selectable' onmousedown='getPubIDs(this);'>" + PubMed[j].childNodes[0].nodeValue + "</p>";
+						
+					} 
+				}
+			}		
+	
+	
+	
+	
+			function presentCitations2()
+		   {
+			 
+			 if ( xhttp.readyState == 4 &&  xhttp.status == 200 )
+				{
+
+               var xmlDoc = xhttp.responseXML;
+                var nameElem = document.getElementById('namecontainer');
+                nameElem.innerHTML = " ";	
+                var dataElm = document.getElementById('datacontainer');
+                dataElm.innerHTML = " ";
+					var author = xmlDoc.getElementsByTagName( 'author' );
+					
+					 authorlist.innerHTML = " ";
+					for( var j = 0 ; j < author.length ; ++j )
+						{
+							
+							authorlist.innerHTML += '<span class= "wrapseq">' + author[j].childNodes[0].nodeValue + '</span>'; 
+						}
+							
+					 var TitleElm = document.getElementById('titlecontainer');	
+				    var Title = xmlDoc.getElementsByTagName( 'Title' )[0].childNodes[0].nodeValue ;
+				    TitleElm.innerHTML = " ";
+				    TitleElm.innerHTML = '<span class = "title">' + Title + '</span>';
+				     
+				    var JournalElm = document.getElementById('journalcontainer');	
+				    JournalElm.innerHTML = " ";
+				    var Journal = xmlDoc.getElementsByTagName( 'journal' )[0].childNodes[0].nodeValue ;
+				    
+					JournalElm.innerHTML +='<p class = "journalclass" >' + "Journal: " + Journal +'</p>'; 
+					
+					var PubElm = document.getElementById('pubcontainer');	
+				   var Pages = xmlDoc.getElementsByTagName( 'pages' )[0].childNodes[0].nodeValue ;
+				   var Year= xmlDoc.getElementsByTagName( 'year' )[0].childNodes[0].nodeValue ;
+				   var Volume = xmlDoc.getElementsByTagName( 'Volume' )[0].childNodes[0].nodeValue ;
+				   PubElm.innerHTML = " ";
+					PubElm.innerHTML ='<span class = "Volume">'+ "Volume: " + Volume + '</span>' + '<span class = "pages">' + "Pages: "+ Pages + '</span>' + '<span class = "years">' + "years: "+ Year + '</span>';
+					
+					
+					} 
+			}
+     </script>
+     </head>
+	<body onload='init()'>
+		<div id ='topcontainer'>
+		   <div id ='sequencecontainer'>
+		   		<div id = 'uniprotidcontainer'></div>
+			   <div id = 'entrycontainer'>
+			   		<div id ='namecontainer'></div>
+			   		<div id = 'datacontainer'></div>
+			   	</div>
+			</div>
+			<div id = 'literatureconatiner'>
+				<div id ='pubmedidcontainer'></div>
+				<div id = 'citatationcontainer'>
+					<div id='titlecontainer'></div>		
+			   		<div id='journalcontainer'></div>
+			   		<div id='pubcontainer'></div>
+			   		<div id='authorcontainer'></div>
+			   	</div>
+			</div>
+		</div>
+		
+	</body>
+	</html>						  		
