@@ -10,7 +10,7 @@ SequenceDatabaseViewer has four components. Each of which links the information 
 
 3. getUNIPROTID.php - Selection of protein IDs(strings) used to generate a query to extract a protein sequence represented as a string, and PubemedIDs(strings)
 
-4. getpubs.php - Selection of PubmedIDs(strings) will generate a query to bring citation information(strings)
+4. getpubs.php - Selection of PubmedIDs(strings) used to generate a query to extract citation information(strings)
 
 
-For example, the UNIPROTID.php is the script to generate an XML file of all the protein id of  ubiquitin conjugating enzyme E2.Then Viewer.html will create a user interface by showing all the protein id in the form of scrolling list.When any protein id is slected it will bring up the information about the sequence and article related to that id.The later step is done with the help of getUNIPROTID.php and getpubs.php.
+
