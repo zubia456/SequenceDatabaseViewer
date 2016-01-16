@@ -8,30 +8,23 @@
 ?>
 <response>
 <?php
-		while($row = mysql_fetch_assoc($result))
-        	{
-
-	 		
-			$Author = $row['Authors'];
-			$Title = $row['Title'];
-			$journal = $row['journal'];
-			$Volume = $row['volume'];
-			$pages = $row['pages'];
-			$year = $row['year'];
+	while($row = mysql_fetch_assoc($result))
+	{
+		$Author = $row['Authors'];
+		$Title = $row['Title'];
+		$journal = $row['journal'];
+		$Volume = $row['volume'];
+		$pages = $row['pages'];
+		$year = $row['year'];
 			
-			
-?>		
-	    
-	
-		
-		<author><?php echo $Author ?></author>
+?>		<author><?php echo $Author ?></author>
 		<Title><?php echo $Title ?></Title>
 		<journal><?php echo $journal ?></journal>
 		<Volume><?php echo $Volume ?></Volume>
 		<pages><?php echo $pages ?></pages>
 		<year><?php echo $year ?></year>
 <?php
-         }
+        }
          
 ?>         		
 </response>
